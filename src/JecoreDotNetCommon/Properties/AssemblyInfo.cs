@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("JecoreDotNetCommon")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("JecoreDotNetCommonDescription")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("AssemblyCompany")]
 [assembly: AssemblyProduct("JecoreDotNetCommon")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
