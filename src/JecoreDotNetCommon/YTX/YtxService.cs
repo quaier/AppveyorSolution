@@ -3,11 +3,11 @@ using System.Data;
 using System.Configuration;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
+//using System.Web.Security;
+//using System.Web.UI;
+//using System.Web.UI.HtmlControls;
+//using System.Web.UI.WebControls;
+//using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Net;
 using System.IO;
@@ -17,6 +17,7 @@ using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json;
 using JecoreDotNetCommon.YTX.Models;
 using System.Security.Cryptography;
+using JecoreDotNetCommon.Extensions;
 
 namespace JecoreDotNetCommon.YTX
 {
@@ -127,8 +128,8 @@ namespace JecoreDotNetCommon.YTX
             //------------------------------------
             //sig:MD5加密（主帐号Id + 主帐号授权令牌 +时间戳）
             string SIGFormal = string.Format("{0}{1}{2}", accountSID, authToken, dtF);
-            Sign = FormsAuthentication.HashPasswordForStoringInConfigFile(SIGFormal, "md5");
-
+            //Sign = FormsAuthentication.HashPasswordForStoringInConfigFile(SIGFormal, "md5");
+            Sign = SIGFormal.ToMd5Hash().ToUpper();
         }
         #endregion
 
@@ -142,7 +143,8 @@ namespace JecoreDotNetCommon.YTX
             //------------------------------------
             //sig:MD5加密（主帐号Id + 主帐号授权令牌 +时间戳）
             string SIGFormal = string.Format("{0}{1}{2}", accountsid, authtoken, dtF);
-            Sign = FormsAuthentication.HashPasswordForStoringInConfigFile(SIGFormal, "md5");
+            //Sign = FormsAuthentication.HashPasswordForStoringInConfigFile(SIGFormal, "md5");
+            Sign = SIGFormal.ToMd5Hash().ToUpper();
         }
         #endregion
 

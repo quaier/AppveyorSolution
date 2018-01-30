@@ -69,6 +69,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -107,11 +108,14 @@
     <Compile Include="Collections\ListExtension.cs" />
     <Compile Include="Data\DataConvert.cs" />
     <Compile Include="Data\DataTableMapping.cs" />
+    <Compile Include="Data\SortCondition.cs" />
     <Compile Include="Drawing\ImageHelper.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\ErrorMessageExtension.cs" />
     <Compile Include="Extensions\HttpClientErrorMessageExtensions.cs" />
     <Compile Include="Extensions\HttpClientOperationResultExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Helper\EnumHelper.cs" />
     <Compile Include="Helper\UserAgent.cs" />
@@ -133,6 +137,13 @@
     <Compile Include="Models\ViewMember.cs" />
     <Compile Include="Net\Http\HttpClientService.cs" />
     <Compile Include="Net\Http\IHttpClientService.cs" />
+    <Compile Include="Filter\CollectionPropertySorter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Secutiry\CommunicationCryptor.cs" />
+    <Compile Include="Secutiry\DesHelper.cs" />
+    <Compile Include="Secutiry\HashHelper.cs" />
+    <Compile Include="Secutiry\HashPass.cs" />
+    <Compile Include="Secutiry\RsaHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Helps.cs" />
     <Compile Include="Web\Http\AllowAnonymousByTokenAttribute.cs" />
@@ -178,6 +189,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="VerificationCode\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
