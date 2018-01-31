@@ -52,5 +52,31 @@ namespace JecoreDotNetCommon.Data
             return new string(array);
         }
         #endregion
+
+        /// <summary>
+        /// 序列化URL参数
+        /// </summary>
+        /// <param name="parametersObj"></param>
+        /// <returns></returns>
+        public static string SerializeUrlParameters(dynamic parametersObj)
+        {
+            if (parametersObj != null)
+            {
+                var array = new List<string>();
+                foreach (var v in parametersObj)
+                {
+                    if (v != null)
+                    {
+                        array.Add(v.Name.ToString() + "=" + v.Value.ToString());
+                    }
+                }
+                var arrayStr = string.Join("&", array.ToArray());
+                if (arrayStr.Length > 0)
+                {
+                    return "?" + arrayStr;
+                }
+            }
+            return "";
+        }
     }
 }

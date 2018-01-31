@@ -1,10 +1,12 @@
-﻿using System;
+﻿using JecoreDotNetCommon.Data;
+using JecoreDotNetCommon.Models;
+using Newtonsoft.Json;
+using System;
 using System.Configuration;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
-using System.Net.Http;
-using JecoreDotNetCommon.Models;
 
 namespace JecoreDotNetCommon.Net.Http
 {
@@ -106,6 +108,36 @@ namespace JecoreDotNetCommon.Net.Http
             }
         }
 
+        public async Task<HttpClientOperationResult> Get(string apiUrl, dynamic parametersObj, string token = "", string domainUrl = "")
+        {
+            using (Client = new HttpClient())
+            {
+                Client.BaseAddress = new Uri(!string.IsNullOrEmpty(domainUrl) ? domainUrl : DomainUrl);
+
+                Client.DefaultRequestHeaders.Accept.Clear();
+
+                SetRequestVerificationToken(Client);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
+                Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_header_json));
+
+                HttpResponseMessage response = await Client.GetAsync(apiUrl + DataConvert.SerializeUrlParameters(parametersObj));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string results = await response.Content.ReadAsStringAsync();
+                    return new HttpClientOperationResult(HttpClientOperationResultType.Success,
+                        response.StatusCode.ToString(), "", results);
+                }
+
+                throw await ExceptiontHandler(response);
+            }
+        }
+
         public async Task<T> Get<T>(string apiUrl, string token = "", string domainUrl = "")
         {
             using (Client = new HttpClient())
@@ -124,6 +156,35 @@ namespace JecoreDotNetCommon.Net.Http
                 Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_header_json));
 
                 HttpResponseMessage response = await Client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    T results = await response.Content.ReadAsAsync<T>();
+                    return results;
+                }
+
+                throw await ExceptiontHandler(response);
+            }
+        }
+
+        public async Task<T> Get<T>(string apiUrl, dynamic parametersObj, string token = "", string domainUrl = "")
+        {
+            using (Client = new HttpClient())
+            {
+                Client.BaseAddress = new Uri(!string.IsNullOrEmpty(domainUrl) ? domainUrl : DomainUrl);
+
+                Client.DefaultRequestHeaders.Accept.Clear();
+
+                SetRequestVerificationToken(Client);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
+                Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_header_json));
+
+                HttpResponseMessage response = await Client.GetAsync(apiUrl + DataConvert.SerializeUrlParameters(parametersObj));
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -173,6 +234,12 @@ namespace JecoreDotNetCommon.Net.Http
             }
         }
 
+        public async Task<HttpClientOperationResult> Post(string apiUrl, dynamic parametersObj, string token = "", HttpContent httpContent = null, string domainUrl = "")
+        {
+            var parametersStr = JsonConvert.SerializeObject(parametersObj);
+            return await Post(apiUrl, parametersStr, token, httpContent, domainUrl);
+        }
+
         public async Task<T> Post<T>(string apiUrl, string data, string token = "", HttpContent httpContent = null, string domainUrl = "")
         {
             using (Client = new HttpClient())
@@ -206,6 +273,12 @@ namespace JecoreDotNetCommon.Net.Http
 
                 throw await ExceptiontHandler(response);
             }
+        }
+
+        public async Task<T> Post<T>(string apiUrl, dynamic parametersObj, string token = "", HttpContent httpContent = null, string domainUrl = "")
+        {
+            var parametersStr = JsonConvert.SerializeObject(parametersObj);
+            return await Post<T>(apiUrl, parametersStr, token, httpContent, domainUrl);
         }
 
         public async Task<HttpClientOperationResult> Put(string apiUrl, string data, string token = "", HttpContent httpContent = null, string domainUrl = "")
@@ -246,6 +319,12 @@ namespace JecoreDotNetCommon.Net.Http
             }
         }
 
+        public async Task<HttpClientOperationResult> Put(string apiUrl, dynamic parametersObj, string token = "", HttpContent httpContent = null, string domainUrl = "")
+        {
+            var parametersStr = JsonConvert.SerializeObject(parametersObj);
+            return await Put(apiUrl, parametersStr, token, httpContent, domainUrl);
+        }
+
         public async Task<T> Put<T>(string apiUrl, string data, string token = "", HttpContent httpContent = null, string domainUrl = "")
         {
             using (Client = new HttpClient())
@@ -279,6 +358,12 @@ namespace JecoreDotNetCommon.Net.Http
 
                 throw await ExceptiontHandler(response);
             }
+        }
+
+        public async Task<T> Put<T>(string apiUrl, dynamic parametersObj, string token = "", HttpContent httpContent = null, string domainUrl = "")
+        {
+            var parametersStr = JsonConvert.SerializeObject(parametersObj);
+            return await Put<T>(apiUrl, parametersStr, token, httpContent, domainUrl);
         }
 
         /// <summary>
